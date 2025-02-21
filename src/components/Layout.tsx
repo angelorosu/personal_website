@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           scrollY > 50 ? "opacity-0" : "opacity-100"
         }`}
       >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Angelo's Blog</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Angelo&apos;s Blog</h1>
         <div className="space-x-6 flex items-center">
           <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</Link>
           <Link href="/blog" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Blog</Link>

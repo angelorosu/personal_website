@@ -35,7 +35,7 @@ export default async function Home() {
     <Layout>
       {/* Hero Section */}
       <section className="text-center mt-12">
-        <h1 className="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-6">Welcome to Angelo's Blog</h1>
+        <h1 className="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-6">Welcome to Angelo&apos;s Blog</h1>
         <p className="text-lg text-gray-700 dark:text-gray-300">
           Exploring AI, Quant Finance, and Research.
         </p>
