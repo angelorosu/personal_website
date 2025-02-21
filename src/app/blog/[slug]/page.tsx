@@ -8,9 +8,10 @@ import "katex/dist/katex.min.css";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-  // No need to await params
-  if (!params || !params.slug) {
+// Use 'any' for params to avoid Next.js type conflict.
+export default async function BlogPost({ params }: { params: any }) {
+  const { slug } = params;
+  if (!slug) {
     return (
       <h1 className="text-center text-2xl font-bold text-red-600 mt-12">
         ❌ 404 - Post Not Found
@@ -18,7 +19,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     );
   }
 
-  const postPath = path.join(process.cwd(), "src/posts", `${params.slug}.mdx`);
+  const postPath = path.join(process.cwd(), "src/posts", `${slug}.mdx`);
 
   if (!fs.existsSync(postPath)) {
     return (
@@ -65,6 +66,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "src/posts");
   const filenames = fs.readdirSync(postsDirectory);
+
   return filenames.map((filename) => ({
     slug: filename.replace(/\.mdx?$/, ""),
   }));
