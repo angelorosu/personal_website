@@ -8,7 +8,8 @@ import "katex/dist/katex.min.css";
 import Image from "next/image"; // ✅ Import Image
 import Link from "next/link";
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+    params = await params; // Ensure params is awaited
   const postPath = path.join(process.cwd(), "src/posts", `${params.slug}.mdx`);
 
   if (!fs.existsSync(postPath)) {
