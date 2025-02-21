@@ -8,7 +8,8 @@ import "katex/dist/katex.min.css";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function BlogPost({ params }: { params?: { slug?: string } }) {
+// ✅ Use async function to fetch the blog post data
+export default async function BlogPost({ params }: { params: { slug: string } }) {
   if (!params?.slug) {
     return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
   }
@@ -48,4 +49,14 @@ export default function BlogPost({ params }: { params?: { slug?: string } }) {
       </ReactMarkdown>
     </div>
   );
+}
+
+// ✅ Ensure Next.js knows what pages to pre-generate
+export async function generateStaticParams() {
+  const postsDirectory = path.join(process.cwd(), "src/posts");
+  const filenames = fs.readdirSync(postsDirectory);
+
+  return filenames.map((filename) => ({
+    slug: filename.replace(/\.mdx?$/, ""),
+  }));
 }
