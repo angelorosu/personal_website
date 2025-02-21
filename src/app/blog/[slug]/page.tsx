@@ -7,10 +7,10 @@ import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import Image from "next/image";
 import Link from "next/link";
-import { PageProps } from "next"; // ✅ Ensure proper typing
 
-export default async function BlogPost({ params }: PageProps<{ slug: string }>) {
-  const { slug } = await params; // ✅ Ensure params is awaited properly
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const resolvedParams = await Promise.resolve(params); // ✅ Ensure params is awaited properly
+  const slug = resolvedParams.slug;
 
   if (!slug) {
     return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
@@ -33,7 +33,7 @@ export default async function BlogPost({ params }: PageProps<{ slug: string }>) 
       </Link>
 
       {/* ✅ Featured Image */}
-      {data.image && (
+      {data.image ? (
         <Image
           src={data.image}
           alt={data.title}
@@ -41,6 +41,8 @@ export default async function BlogPost({ params }: PageProps<{ slug: string }>) 
           height={400}
           className="rounded-lg mx-auto"
         />
+      ) : (
+        <p className="text-center text-gray-500">No image available.</p>
       )}
 
       <h1 className="text-4xl font-bold">{data.title}</h1>
