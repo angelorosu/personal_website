@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../contentlayer.config.ts"],
+  "sourcesContent": ["import { defineDocumentType, makeSource } from \"contentlayer/source-files\";\n\nexport const BlogPost = defineDocumentType(() => ({\n  name: \"BlogPost\",\n  filePathPattern: \"blog/*.mdx\", // This assumes posts are inside `/content/blog/`\n  contentType: \"mdx\",\n  fields: {\n    title: { type: \"string\", required: true },\n    date: { type: \"date\", required: true },\n  },\n  computedFields: {\n    slug: {\n      type: \"string\",\n      resolve: (doc) => doc._raw.flattenedPath, // \u2705 Fix this field\n    },\n  },\n}));\n\nexport default makeSource({\n  contentDirPath: \"content\",\n  documentTypes: [BlogPost],\n});\n"],
+  "mappings": ";AAAA,SAAS,oBAAoB,kBAAkB;AAExC,IAAM,WAAW,mBAAmB,OAAO;AAAA,EAChD,MAAM;AAAA,EACN,iBAAiB;AAAA;AAAA,EACjB,aAAa;AAAA,EACb,QAAQ;AAAA,IACN,OAAO,EAAE,MAAM,UAAU,UAAU,KAAK;AAAA,IACxC,MAAM,EAAE,MAAM,QAAQ,UAAU,KAAK;AAAA,EACvC;AAAA,EACA,gBAAgB;AAAA,IACd,MAAM;AAAA,MACJ,MAAM;AAAA,MACN,SAAS,CAAC,QAAQ,IAAI,KAAK;AAAA;AAAA,IAC7B;AAAA,EACF;AACF,EAAE;AAEF,IAAO,8BAAQ,WAAW;AAAA,EACxB,gBAAgB;AAAA,EAChB,eAAe,CAAC,QAAQ;AAC1B,CAAC;",
+  "names": []
+}
