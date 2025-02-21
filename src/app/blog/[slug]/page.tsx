@@ -9,17 +9,23 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
-  const resolvedParams = await Promise.resolve(params); // ✅ Ensure params is awaited properly
-  const slug = resolvedParams.slug;
-
-  if (!slug) {
-    return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
+  // No need to await params
+  if (!params || !params.slug) {
+    return (
+      <h1 className="text-center text-2xl font-bold text-red-600 mt-12">
+        ❌ 404 - Post Not Found
+      </h1>
+    );
   }
 
-  const postPath = path.join(process.cwd(), "src/posts", `${slug}.mdx`);
+  const postPath = path.join(process.cwd(), "src/posts", `${params.slug}.mdx`);
 
   if (!fs.existsSync(postPath)) {
-    return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
+    return (
+      <h1 className="text-center text-2xl font-bold text-red-600 mt-12">
+        ❌ 404 - Post Not Found
+      </h1>
+    );
   }
 
   const source = fs.readFileSync(postPath, "utf8");
@@ -27,13 +33,16 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
   return (
     <div className="prose dark:prose-invert mx-auto p-6">
-      {/* ✅ Back to Blog Button */}
-      <Link href="/blog" className="inline-block mb-4 px-4 py-2 bg-gray-800 dark:bg-gray-300 text-white dark:text-gray-900 rounded-md hover:bg-gray-900 dark:hover:bg-gray-200 transition">
+      {/* Back to Blog Button */}
+      <Link
+        href="/blog"
+        className="inline-block mb-4 px-4 py-2 bg-gray-800 dark:bg-gray-300 text-white dark:text-gray-900 rounded-md hover:bg-gray-900 dark:hover:bg-gray-200 transition"
+      >
         ⬅️ Back to Blog
       </Link>
 
-      {/* ✅ Featured Image */}
-      {data.image ? (
+      {/* Featured Image */}
+      {data.image && (
         <Image
           src={data.image}
           alt={data.title}
@@ -41,8 +50,6 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           height={400}
           className="rounded-lg mx-auto"
         />
-      ) : (
-        <p className="text-center text-gray-500">No image available.</p>
       )}
 
       <h1 className="text-4xl font-bold">{data.title}</h1>
@@ -55,11 +62,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   );
 }
 
-// ✅ Fix Next.js Static Params for Build
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "src/posts");
   const filenames = fs.readdirSync(postsDirectory);
-
   return filenames.map((filename) => ({
     slug: filename.replace(/\.mdx?$/, ""),
   }));
