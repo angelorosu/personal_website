@@ -7,14 +7,16 @@ import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import Image from "next/image";
 import Link from "next/link";
+import { PageProps } from "next"; // ✅ Ensure proper typing
 
-// ✅ Use async function to fetch the blog post data
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-  if (!params?.slug) {
+export default async function BlogPost({ params }: PageProps<{ slug: string }>) {
+  const { slug } = await params; // ✅ Ensure params is awaited properly
+
+  if (!slug) {
     return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
   }
 
-  const postPath = path.join(process.cwd(), "src/posts", `${params.slug}.mdx`);
+  const postPath = path.join(process.cwd(), "src/posts", `${slug}.mdx`);
 
   if (!fs.existsSync(postPath)) {
     return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
@@ -51,7 +53,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   );
 }
 
-// ✅ Ensure Next.js knows what pages to pre-generate
+// ✅ Fix Next.js Static Params for Build
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "src/posts");
   const filenames = fs.readdirSync(postsDirectory);
