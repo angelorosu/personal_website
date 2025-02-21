@@ -5,11 +5,14 @@ import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
-import Image from "next/image"; // ✅ Import Image
+import Image from "next/image";
 import Link from "next/link";
 
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-    params = await params; // Ensure params is awaited
+export default function BlogPost({ params }: { params?: { slug?: string } }) {
+  if (!params?.slug) {
+    return <h1 className="text-center text-2xl font-bold text-red-600 mt-12">❌ 404 - Post Not Found</h1>;
+  }
+
   const postPath = path.join(process.cwd(), "src/posts", `${params.slug}.mdx`);
 
   if (!fs.existsSync(postPath)) {
@@ -28,7 +31,13 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
       {/* ✅ Featured Image */}
       {data.image && (
-        <Image src={data.image} alt={data.title} width={800} height={400} className="rounded-lg mx-auto" />
+        <Image
+          src={data.image}
+          alt={data.title}
+          width={800}
+          height={400}
+          className="rounded-lg mx-auto"
+        />
       )}
 
       <h1 className="text-4xl font-bold">{data.title}</h1>
